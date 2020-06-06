@@ -10,7 +10,7 @@ import { Dish } from '../shared/dish';
 export class DishdetailComponent implements OnInit {
 
   @Input()
-  dish : Dish;
+  dish : Dish;   // the value of [dish] ="selectedDish" is passed to this line and this dish value is passed to dish detailcomponent.html
 
   constructor() { }
 
