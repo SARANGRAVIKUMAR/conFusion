@@ -7,6 +7,12 @@ import { MatListModule } from '@angular/material/list';
 import { AppRoutingModule } from './app-routing/app-routing.module';
 import { AppComponent } from './app.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { FormsModule } from '@angular/forms';
+
+
 import 'hammerjs';
 import { MenuComponent } from './menu/menu.component';
 import { MatGridListModule } from '@angular/material/grid-list'
@@ -47,6 +53,10 @@ import { LoginComponent } from './login/login.component';
     MatButtonModule,
     MatCardModule,
     MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatCheckboxModule,
+    FormsModule,
 
   ],
   providers: [
@@ -55,7 +65,7 @@ import { LoginComponent } from './login/login.component';
     LeaderService,
   ],
   entryComponents: [
-    LoginComponent,              //will be able to use the login page over the current screen 
+    LoginComponent,              //will be able to use the login page over the current screen
   ],
   bootstrap: [AppComponent]
 })
