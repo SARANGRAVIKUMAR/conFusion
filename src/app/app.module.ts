@@ -6,6 +6,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatListModule } from '@angular/material/list';
 import { AppRoutingModule } from './app-routing/app-routing.module';
 import { AppComponent } from './app.component';
+import { MatDialogModule } from '@angular/material/dialog';
 import 'hammerjs';
 import { MenuComponent } from './menu/menu.component';
 import { MatGridListModule } from '@angular/material/grid-list'
@@ -20,6 +21,7 @@ import { ContactComponent } from './contact/contact.component';
 import { PromotionService } from './services/promotion.service';
 import { DishService } from './services/dish.service';
 import { LeaderService } from './services/leader.service';
+import { LoginComponent } from './login/login.component';
 
 
 @NgModule({
@@ -31,7 +33,8 @@ import { LeaderService } from './services/leader.service';
     FooterComponent,
     AboutComponent,
     HomeComponent,
-    ContactComponent
+    ContactComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -43,12 +46,16 @@ import { LeaderService } from './services/leader.service';
     MatGridListModule,
     MatButtonModule,
     MatCardModule,
+    MatDialogModule,
 
   ],
   providers: [
     DishService,
     PromotionService,          //this is to add the service to all components
     LeaderService,
+  ],
+  entryComponents: [
+    LoginComponent,              //will be able to use the login page over the current screen 
   ],
   bootstrap: [AppComponent]
 })
