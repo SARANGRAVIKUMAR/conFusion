@@ -5,14 +5,13 @@
   <button mat-button mat-dialog-close>&times;</button>
 </mat-toolbar>
 
-<p> {{user|json}}</p>
-
 <!--#loginFrom is a template variblee-->
 <form novalidate #loginForm="ngForm" (ngSubmit)="onSubmit()">
   <!-- content for the dialog box-->
   <mat-dialog-content>
     <mat-form-field>
-      <input matInput placeholder="Username" type="text" [(ngModel)]="user.username" name="username"  #username="ngModel" required>
+      <input matInput placeholder="Username" type="text" [(ngModel)]="user.username" name="username" #username="ngModel"
+        required>
       <!--to display error messages-->
       <mat-error *ngIf="username.errors?.required">Username is required</mat-error>
       <!-- here username refers to #username which is template variable. errors?.reuqired will activate if the required type of error is causing it -->
@@ -30,7 +29,8 @@
     <span class="flex-spacer"></span>
     <button mat-button mat-dialog-close> Cancel</button>
 
-    <button mat-button type="submit" class="background-primary text-floral-white" [disabled]="loginForm.form.invalid">Login</button>
+    <button mat-button type="submit" class="background-primary text-floral-white"
+      [disabled]="loginForm.form.invalid">Login</button>
     <!-- buttton will be disabled if the form is invalid like if username or pasword is empty-->
   </mat-dialog-actions>
 </form>

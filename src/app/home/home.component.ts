@@ -24,9 +24,9 @@ export class HomeComponent implements OnInit {
     private leaderservice:LeaderService,) { }
 
   ngOnInit(): void {
-    this.dish = this.dishService.getFeaturedDish();
-    this.promotion = this.promotionService.getFeaturedPromotion();
-    this.leader  = this.leaderservice.getFeaturedLeader();
+    this.dishService.getFeaturedDish().then((dish)=>this.dish=dish);      // then takes a call back function as a parameterand will be called when the promise is called seccesfuly
+    this.promotionService.getFeaturedPromotion().then((promotion)=>this.promotion=promotion);
+    this.leaderservice.getFeaturedLeader().then((leader)=>this.leader=leader);
 
   }
 
