@@ -10,8 +10,8 @@ import { DishService } from '../services/dish.service';
   styleUrls: ['./menu.component.scss']
 })
 export class MenuComponent implements OnInit {
-
-  dishes: Dish[]  //declare dishes array of type DISH
+ //declare dishes array of type DISH
+  dishes: Dish[]   //currently it does not contain any value it will be null it will only gte value when the promise is resolved
 
   selectedDish: Dish;
 

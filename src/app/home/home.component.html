@@ -47,4 +47,14 @@
   </mat-card-content>
 </mat-card>
 
+<div fxFlex [hidden] = "leader">     <!--when the leader is empty that is opposite of the above div loading spinnner will be shown -->
+  <mat-spinner></mat-spinner> <h4>loading..........Plese wait</h4>
+</div>
+<div fxFlex [hidden] = "promotion">     <!--when the promotion is empty that is opposite of the above div loading spinnner will be shown -->
+  <mat-spinner></mat-spinner> <h4>loading..........Plese wait</h4>
+</div>
+<div fxFlex [hidden] = "dish">     <!--when the dish is empty that is opposite of the above div loading spinnner will be shown -->
+  <mat-spinner></mat-spinner> <h4>loading..........Plese wait</h4>
+</div>
+
 </div>

@@ -49,5 +49,8 @@
             </mat-card-content>
             </mat-card>
   </div>
+  <div fxFlex [hidden] = "dish">     <!--when the dish is empty that is opposite of the above div loading spinnner will be shown -->
+    <mat-spinner></mat-spinner> <h4>loading..........Plese wait</h4>
+  </div>
 
 </div>

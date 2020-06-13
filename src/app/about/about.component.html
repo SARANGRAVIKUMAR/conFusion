@@ -56,7 +56,7 @@
 
   <div fxFlex>
     <h2>Corporate Leadership</h2>
-    <mat-list>
+    <mat-list *ngIf="leaders">
       <mat-list-item *ngFor = "let leader of leaders">
         <img mat-list-avatar src="{{leader.image}}">
         <p mat-line>{{leader.name}} {{leader.abbr}}</p>
@@ -64,5 +64,8 @@
         <p mat-line>{{leader.description}}</p>
       </mat-list-item>
     </mat-list>
+  </div>
+  <div fxFlex [hidden] = "leaders">     <!--when the leaders is empty that is opposite of the above div loading spinnner will be shown -->
+    <mat-spinner></mat-spinner> <h4>loading..........Plese wait</h4>
   </div>
 </div>
