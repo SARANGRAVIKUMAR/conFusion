@@ -16,7 +16,7 @@ export class AboutComponent implements OnInit {
 
   ngOnInit(): void {
 
-  this.leaderservice.getLeaders().then((leaders) =>this.leaders=leaders); // then takes a call back function as a parameterand will be called when the promise is called seccesfuly
+  this.leaderservice.getLeaders().subscribe((leaders) =>this.leaders=leaders); // subscribe takes a call back function as a parameterand will be called when the observable is called seccesfuly
   }
 
 }

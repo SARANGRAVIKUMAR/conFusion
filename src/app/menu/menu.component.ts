@@ -22,7 +22,7 @@ export class MenuComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.dishService.getDishes().then ((dishes)=>this.dishes=dishes);     // then takes a call back function as a parameterand will be called when the promise is called seccesfuly
+    this.dishService.getDishes().subscribe ((dishes)=>this.dishes=dishes);     // subscribe takes a call back function as a parameterand will be called when the observable is called seccesfuly
 
   }
   onSelect(dish: Dish) {
