@@ -15,7 +15,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import {MatSliderModule} from '@angular/material/slider';
+import { MatSliderModule } from '@angular/material/slider';
+import { HttpClientModule } from '@angular/common/http';
 
 
 import 'hammerjs';
@@ -33,6 +34,7 @@ import { PromotionService } from './services/promotion.service';
 import { DishService } from './services/dish.service';
 import { LeaderService } from './services/leader.service';
 import { LoginComponent } from './login/login.component';
+import { baseUrl } from './shared/baseurl';   //so that it will be available to all other application
 
 
 @NgModule({
@@ -67,6 +69,7 @@ import { LoginComponent } from './login/login.component';
     MatSelectModule,
     MatProgressSpinnerModule,
     MatSliderModule,
+    HttpClientModule,
 
 
   ],
@@ -74,6 +77,7 @@ import { LoginComponent } from './login/login.component';
     DishService,
     PromotionService,          //this is to add the service to all components
     LeaderService,
+    { provide: 'BaseUrl', useValue: baseUrl }    //Register a base URL provider in the module so it is available everywhere in the application:
   ],
   entryComponents: [
     LoginComponent,              //will be able to use the login page over the current screen

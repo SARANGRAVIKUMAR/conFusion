@@ -1,8 +1,11 @@
+import { baseUrl } from './../shared/baseurl';
 import { Injectable } from '@angular/core';
 import { Dish } from '../shared/dish';
-import { DISHES } from '../shared/dishes';
-import { Observable,of } from 'rxjs'
-import { delay } from 'rxjs/operators'
+import { Observable, of } from 'rxjs'
+import { map } from 'rxjs/operators'
+import { HttpClient } from '@angular/common/http';
+
+
 
 @Injectable({
   providedIn: 'root'
@@ -10,23 +13,41 @@ import { delay } from 'rxjs/operators'
 //Observable realy mean that real result is not currenlty available and when its available it will return the value like taking a value from database will require some time
 export class DishService {
 
-  constructor() { }
-  // this function is used to get all the dishes from dishes.ts
+  constructor(private http: HttpClient) { }
+
+
+
+  // this function is used to get all the dishes from server
   getDishes(): Observable<Dish[]>                        //use of Observable
   {
-    return of(DISHES).pipe(delay(2000));      //here if its resolved the data will be dalayed for 2s
+    return this.http.get<Dish[]>(baseUrl + 'dishes');     //here the baseurl is "localhost:3000" and dishes conatain set of dishes
   }
   getDish(id: string): Observable<Dish> {
 
-    return  of(DISHES.filter((dish) => (dish.id === id))[0]).pipe(delay(2000));
+    return this.http.get<Dish>(baseUrl + "dishes/" + id);
   }
-  getFeaturedDish(): Observable<Dish> {
+  /*We can use pipes to link operators together. Pipes let you combine multiple functions into a single function.
+    The pipe() function takes the functions you want to combine as it's arguments and returns a new function that,
+    when executed*/
 
-    return of(DISHES.filter((dish) => dish.featured)[0]).pipe(delay(2000));
+    getFeaturedDish(): Observable<Dish> {
+      return this.http.get<Dish[]>(baseUrl + 'dishes?featured=true').pipe(map(dishes => dishes[0]));
+    }
 
-  }
   // will return a array of string
-  getDishIds(): Observable<string[] |any>{
-    return of(DISHES.map(dish=>dish.id));
+  getDishIds(): Observable<string[] | any> {
+    return this.getDishes().pipe(map(dishes => dishes.map(dish => dish.id)));
   }
 }
+/* arrow function is same as that of function
+    let sum = (x: number, y: number): number => {
+    return x + y;
+} is same as
+ var sum = function (x, y) {
+    return x + y;
+} or like his if a function contain only one statement
+  let sum = (x: number, y: number) => x + y;
+  so in here dishes is the parameter and dish are the parameter of the function*/
+
+/* map operator is basically used to perform some operation based on the value we get
+so from below first it perform dish=>dish.id and store it as an array the and map it wih the dishes*/
