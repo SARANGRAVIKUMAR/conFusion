@@ -33,6 +33,7 @@ import { ContactComponent } from './contact/contact.component';
 import { PromotionService } from './services/promotion.service';
 import { DishService } from './services/dish.service';
 import { LeaderService } from './services/leader.service';
+import { ProcessHTTPMsgService } from './services/process-httpmsg.service';
 import { LoginComponent } from './login/login.component';
 import { baseUrl } from './shared/baseurl';   //so that it will be available to all other application
 
@@ -77,6 +78,7 @@ import { baseUrl } from './shared/baseurl';   //so that it will be available to 
     DishService,
     PromotionService,          //this is to add the service to all components
     LeaderService,
+    ProcessHTTPMsgService,
     { provide: 'BaseUrl', useValue: baseUrl }    //Register a base URL provider in the module so it is available everywhere in the application:
   ],
   entryComponents: [

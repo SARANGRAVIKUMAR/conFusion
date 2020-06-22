@@ -19,6 +19,7 @@ export class DishdetailComponent implements OnInit {
 
   dish: Dish;   // the value of [dish] ="selectedDish" is passed to this line and this dish value is passed to dish detailcomponent.html
   dishIds: string[];
+  errMess:string;
   prev: string;
   next: string;
   commentForm: FormGroup;
@@ -57,12 +58,14 @@ export class DishdetailComponent implements OnInit {
     this.dishservice.getDishIds().subscribe((dishIds) => this.dishIds = dishIds);   // subscribe takes a call back function as a parameter and will be called when the observable is called seccesfuly
 
 
-    //this.route.params, params is a property in this.route which returns an Observable.Here, params is name given to the argument that the function receives.
-    //The above function executes when a new value is emitted on the Observable from this.routes.params. The value that is emitted here is passed into the anonymous function as its argument, which happens to be called params
-    //when params observable changes value which means route.params changes values the switch map param will take that value and do a getDish from dishservice
-    //so any time the param value is changed it get update to new dish
+    /*this.route.params, params is a property in this.route which returns an Observable.Here, params is name given to the argument that the function receives.
+    The above function executes when a new value is emitted on the Observable from this.routes.params. The value that is emitted here is passed into the anonymous function as its argument, which happens to be called params
+    when params observable changes value which means route.params changes values the switch map param will take that value and do a getDish from dishservice
+    so any time the param value is changed it get update to new dish*/
     this.route.params.pipe(switchMap((params: Params) => this.dishservice.getDish(params['id'])))
-      .subscribe(dish => { this.dish = dish; this.setPrevNext(dish.id); });
+      //dish is a function which return more than one parameter so we use { }
+      .subscribe(dish => { this.dish = dish; this.setPrevNext(dish.id); },   //this , means if the first dish function does not work teh errmess will work
+      errmess =>this.errMess=<any>errmess);
   }
   setPrevNext(dishId: string) {
     const index = this.dishIds.indexOf(dishId);

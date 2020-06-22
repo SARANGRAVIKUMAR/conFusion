@@ -1,10 +1,10 @@
-import { Component, OnInit,Inject } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { Dish } from '../shared/dish';
 import { DishService } from '../services/dish.service';
 import { Promotion } from '../shared/promotion';
 import { PromotionService } from '../services/promotion.service';
-import {LeaderService}  from '../services/leader.service';
-import {Leader} from '../shared/leader';
+import { LeaderService } from '../services/leader.service';
+import { Leader } from '../shared/leader';
 
 
 @Component({
@@ -16,18 +16,20 @@ export class HomeComponent implements OnInit {
 
   dish: Dish;
   promotion: Promotion;
-  leader : Leader;
+  leader: Leader;
+  dishErrMess: string
 
   constructor(
     private dishService: DishService,
     private promotionService: PromotionService,
-    private leaderservice:LeaderService,
+    private leaderservice: LeaderService,
     @Inject('BaseUrl') public BaseUrl) { }
 
   ngOnInit(): void {
-    this.dishService.getFeaturedDish().subscribe((dish)=>this.dish=dish);      // subscribe takes a call back function as a parameterand will be called when the observable is called seccesfuly
-    this.promotionService.getFeaturedPromotion().subscribe((promotion)=>this.promotion=promotion);
-    this.leaderservice.getFeaturedLeader().subscribe((leader)=>this.leader=leader);
+    // subscribe takes a call back function as a parameterand will be called when the observable is called seccesfuly
+    this.dishService.getFeaturedDish().subscribe((dish) => this.dish = dish, errmess => this.dishErrMess = <any>errmess);
+    this.promotionService.getFeaturedPromotion().subscribe((promotion) => this.promotion = promotion);
+    this.leaderservice.getFeaturedLeader().subscribe((leader) => this.leader = leader);
 
   }
 

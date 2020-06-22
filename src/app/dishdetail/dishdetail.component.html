@@ -86,10 +86,14 @@
         </mat-card-content>
       </mat-card>
     </div>
-    <div fxFlex [hidden]="dish">
+    <div fxFlex [hidden]="dish || errMess">
       <!--when the dish is empty that is opposite of the above div loading spinnner will be shown -->
       <mat-spinner></mat-spinner>
       <h4>loading..........Plese wait</h4>
+    </div>
+    <div fxFlex *ngIf="errMess">
+      <h2>Error</h2>
+      <h4>{{errMess}}</h4>
     </div>
 
   </div>

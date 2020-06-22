@@ -1,10 +1,10 @@
+import { ProcessHTTPMsgService } from './process-httpmsg.service';
 import { baseUrl } from './../shared/baseurl';
 import { Injectable } from '@angular/core';
 import { Dish } from '../shared/dish';
-import { Observable, of } from 'rxjs'
-import { map } from 'rxjs/operators'
+import { Observable } from 'rxjs'
+import { map, catchError } from 'rxjs/operators'
 import { HttpClient } from '@angular/common/http';
-
 
 
 @Injectable({
@@ -13,30 +13,31 @@ import { HttpClient } from '@angular/common/http';
 //Observable realy mean that real result is not currenlty available and when its available it will return the value like taking a value from database will require some time
 export class DishService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,
+    private processHTTPMsgService: ProcessHTTPMsgService) { }
 
 
 
   // this function is used to get all the dishes from server
   getDishes(): Observable<Dish[]>                        //use of Observable
   {
-    return this.http.get<Dish[]>(baseUrl + 'dishes');     //here the baseurl is "localhost:3000" and dishes conatain set of dishes
+    return this.http.get<Dish[]>(baseUrl + 'dishes').pipe(catchError(this.processHTTPMsgService.handleError))     //here the baseurl is "localhost:3000" and dishes conatain set of dishes
   }
   getDish(id: string): Observable<Dish> {
 
-    return this.http.get<Dish>(baseUrl + "dishes/" + id);
+    return this.http.get<Dish>(baseUrl + "dishes/" + id).pipe(catchError(this.processHTTPMsgService.handleError))
   }
   /*We can use pipes to link operators together. Pipes let you combine multiple functions into a single function.
     The pipe() function takes the functions you want to combine as it's arguments and returns a new function that,
     when executed*/
 
     getFeaturedDish(): Observable<Dish> {
-      return this.http.get<Dish[]>(baseUrl + 'dishes?featured=true').pipe(map(dishes => dishes[0]));
+      return this.http.get<Dish[]>(baseUrl + 'dishes?featured=true').pipe(map(dishes => dishes[0])).pipe(catchError(this.processHTTPMsgService.handleError));
     }
 
   // will return a array of string
-  getDishIds(): Observable<string[] | any> {
-    return this.getDishes().pipe(map(dishes => dishes.map(dish => dish.id)));
+  getDishIds(): Observable<number[] | any> {
+    return this.getDishes().pipe(map(dishes => dishes.map(dish => dish.id))).pipe(catchError(error => error));
   }
 }
 /* arrow function is same as that of function
