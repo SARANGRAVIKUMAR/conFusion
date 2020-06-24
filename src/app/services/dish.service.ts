@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 import { Dish } from '../shared/dish';
 import { Observable } from 'rxjs'
 import { map, catchError } from 'rxjs/operators'
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 
 @Injectable({
@@ -31,15 +31,25 @@ export class DishService {
     The pipe() function takes the functions you want to combine as it's arguments and returns a new function that,
     when executed*/
 
-    getFeaturedDish(): Observable<Dish> {
-      return this.http.get<Dish[]>(baseUrl + 'dishes?featured=true').pipe(map(dishes => dishes[0])).pipe(catchError(this.processHTTPMsgService.handleError));
-    }
+  getFeaturedDish(): Observable<Dish> {
+    return this.http.get<Dish[]>(baseUrl + 'dishes?featured=true').pipe(map(dishes => dishes[0])).pipe(catchError(this.processHTTPMsgService.handleError));
+  }
 
   // will return a array of string
   getDishIds(): Observable<number[] | any> {
     return this.getDishes().pipe(map(dishes => dishes.map(dish => dish.id))).pipe(catchError(error => error));
   }
+  putDish(dish: Dish): Observable<Dish> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
+    return this.http.put<Dish>(baseUrl + 'dishes/' + dish.id, dish, httpOptions)
+      .pipe(catchError(this.processHTTPMsgService.handleError));
+  }
 }
+
 /* arrow function is same as that of function
     let sum = (x: number, y: number): number => {
     return x + y;

@@ -1,5 +1,5 @@
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Component, OnInit, ViewChild ,Inject} from '@angular/core';
+import { Component, OnInit, ViewChild, Inject } from '@angular/core';
 import { Dish } from '../shared/dish';
 import { Params, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
@@ -19,13 +19,13 @@ export class DishdetailComponent implements OnInit {
 
   dish: Dish;   // the value of [dish] ="selectedDish" is passed to this line and this dish value is passed to dish detailcomponent.html
   dishIds: string[];
-  errMess:string;
+  errMess: string;
   prev: string;
   next: string;
   commentForm: FormGroup;
   comment: Comment;
-  dishcopy = null;
-  @ViewChild('cform') feedbackFormDirective;
+  dishcopy: Dish;    //it will store the copy of the modified  dish till its posted to server
+  @ViewChild('cform') commentFormDirective
 
 
   formErrors = {
@@ -48,8 +48,7 @@ export class DishdetailComponent implements OnInit {
     private location: Location,
     private route: ActivatedRoute,
     private fb: FormBuilder,
-    @Inject('BaseUrl') public BaseUrl)
-    { this.createForm(); }
+    @Inject('BaseUrl') public BaseUrl) { this.createForm(); }
 
 
 
@@ -64,8 +63,8 @@ export class DishdetailComponent implements OnInit {
     so any time the param value is changed it get update to new dish*/
     this.route.params.pipe(switchMap((params: Params) => this.dishservice.getDish(params['id'])))
       //dish is a function which return more than one parameter so we use { }
-      .subscribe(dish => { this.dish = dish; this.setPrevNext(dish.id); },   //this , means if the first dish function does not work teh errmess will work
-      errmess =>this.errMess=<any>errmess);
+      .subscribe(dish => { this.dish = dish; this.dishcopy = dish; this.setPrevNext(dish.id); },   //this , means if the first dish function does not work teh errmess will work
+        errmess => this.errMess = <any>errmess);
   }
   setPrevNext(dishId: string) {
     const index = this.dishIds.indexOf(dishId);
@@ -104,11 +103,17 @@ export class DishdetailComponent implements OnInit {
   }
   onSubmit() {
     this.comment = this.commentForm.value;    //taking teh comment form value
-    this.dish.comments.push(this.comment)   // pushing the comment from form value to actual comments
-    console.log(this.comment);
+    this.comment.date = new Date().toISOString();
+    console.log(this.comment)
+    this.dishcopy.comments.push(this.comment)   // pushing the comment from form value to actual comments
+    this.dishservice.putDish(this.dishcopy)     //becoz dishcopy contains the modified dish version
+      .subscribe(dish => {
+        this.dish = dish;
+        this.dishcopy = dish;
+      },
+        errmess => { this.dish = null; this.dishcopy = null; this.errMess = <any>errmess; });   //becoz dishcopy contains the modified dish version
+    this.commentFormDirective.resetForm()
 
-    var d = new Date();
-    this.comment["date"] = d.toISOString();
 
     this.commentForm.reset({
       author: '',
