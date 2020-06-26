@@ -35,7 +35,8 @@ import { DishService } from './services/dish.service';
 import { LeaderService } from './services/leader.service';
 import { ProcessHTTPMsgService } from './services/process-httpmsg.service';
 import { LoginComponent } from './login/login.component';
-import { baseUrl } from './shared/baseurl';   //so that it will be available to all other application
+import { baseUrl } from './shared/baseurl';
+import { HighlightDirective } from './directives/highlight.directive';   //so that it will be available to all other application
 
 
 @NgModule({
@@ -48,7 +49,8 @@ import { baseUrl } from './shared/baseurl';   //so that it will be available to 
     AboutComponent,
     HomeComponent,
     ContactComponent,
-    LoginComponent
+    LoginComponent,
+    HighlightDirective
   ],
   imports: [
     BrowserModule,
