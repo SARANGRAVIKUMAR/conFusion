@@ -6,13 +6,27 @@ import { Location } from '@angular/common';
 import { DishService } from '../services/dish.service';
 import { switchMap } from 'rxjs/operators';
 import { Comment } from '../shared/comment';
+import {trigger,state,style,animate,transition, animation}  from '@angular/animations';
 
 
 
 @Component({
   selector: 'app-dishdetail',
   templateUrl: './dishdetail.component.html',
-  styleUrls: ['./dishdetail.component.scss']
+  styleUrls: ['./dishdetail.component.scss'],
+  animations: [
+    trigger('visibility', [
+        state('shown', style({
+            transform: 'scale(1.0)',
+            opacity: 1
+        })),
+        state('hidden', style({
+            transform: 'scale(0.5)',
+            opacity: 0
+        })),
+        transition('* => *', animate('0.5s ease-in-out'))
+    ])
+  ]
 })
 export class DishdetailComponent implements OnInit {
 
@@ -26,6 +40,7 @@ export class DishdetailComponent implements OnInit {
   comment: Comment;
   dishcopy: Dish;    //it will store the copy of the modified  dish till its posted to server
   @ViewChild('cform') commentFormDirective
+  visibility = "show"
 
 
   formErrors = {
@@ -61,9 +76,9 @@ export class DishdetailComponent implements OnInit {
     The above function executes when a new value is emitted on the Observable from this.routes.params. The value that is emitted here is passed into the anonymous function as its argument, which happens to be called params
     when params observable changes value which means route.params changes values the switch map param will take that value and do a getDish from dishservice
     so any time the param value is changed it get update to new dish*/
-    this.route.params.pipe(switchMap((params: Params) => this.dishservice.getDish(params['id'])))
+    this.route.params.pipe(switchMap((params: Params) => { this.visibility = 'hidden'; return this.dishservice.getDish(params['id']); }))
       //dish is a function which return more than one parameter so we use { }
-      .subscribe(dish => { this.dish = dish; this.dishcopy = dish; this.setPrevNext(dish.id); },   //this , means if the first dish function does not work teh errmess will work
+      .subscribe(dish => { this.dish = dish; this.dishcopy = dish; this.setPrevNext(dish.id); this.visibility = 'shown';},   // ',' atn the end of this line means if the first dish function does not work teh errmess will work
         errmess => this.errMess = <any>errmess);
   }
   setPrevNext(dishId: string) {
