@@ -10,7 +10,7 @@
 
   </div>
   <!--will only show the dish image when the dishes in menu component.ts in not empty,the dishes will get value only when promise is resolved-->
-  <div fxFlex *ngIf="dishes">
+  <div fxFlex *ngIf="dishes" [@expand]>
     <mat-grid-list cols="2" rowHeight="200px">
       <!--appHightlight is a costam directive which is in directives files -->
       <mat-grid-tile *ngFor="let dish of dishes" [routerLink]="['/dishdetail', dish.id]" appHighlight>
