@@ -1,8 +1,8 @@
+import { FeedbackService } from './../services/feedback.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import {flyInOut,expand} from '../animations/app.animation'
 import { Feedback, ContactType } from '../shared/feedback';
-
+import { flyInOut, expand } from '../animations/app.animation';
 
 @Component({
   selector: 'app-contact',
@@ -11,19 +11,21 @@ import { Feedback, ContactType } from '../shared/feedback';
   host: {
     '[@flyInOut]': 'true',
     'style': 'display: block;'
-    },
-    animations: [
-      flyInOut(),
-      expand(),
-
-    ]
+  },
+  animations: [
+    flyInOut(),
+    expand()
+  ]
 })
+
 export class ContactComponent implements OnInit {
+
+  @ViewChild('fform') feedbackFormDirective;
   feedbackForm: FormGroup;
   feedback: Feedback;
+  feedbackCopy: Feedback;
   contactType = ContactType;
-  @ViewChild('fform') feedbackFormDirective;
-
+  submitting = false;
 
   formErrors = {
     'firstname': '',
@@ -53,30 +55,32 @@ export class ContactComponent implements OnInit {
     },
   };
 
-  constructor(private fb: FormBuilder) {
+
+  constructor(private fb: FormBuilder,
+    private feedbackService: FeedbackService) {
     this.createForm();
   }
 
   ngOnInit() {
   }
 
-  createForm() {
+  createForm(): void {
     this.feedbackForm = this.fb.group({
       firstname: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(25)]],
       lastname: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(25)]],
-      telnum: ['', [Validators.required, Validators.pattern]],   // to add patterns  like enterd number should be btw 0 and 9
+      telnum: ['', [Validators.required, Validators.pattern]],
       email: ['', [Validators.required, Validators.email]],
       agree: false,
       contacttype: 'None',
       message: ''
     });
-    // It allows us to track changes made to the value in real-time and respond to it. For example, we can use it to validate the value, calculate the computed fields, etc.
-    this.feedbackForm.valueChanges.subscribe(data => this.onValueChanged(data))
+    this.feedbackForm.valueChanges
+      .subscribe(data => this.onValueChanged(data));
 
-    this.onValueChanged()    //reset the form validation messages
+    this.onValueChanged(); // (re)set validation messages now
+
   }
 
-  //data? means thet parameter is optional
   onValueChanged(data?: any) {
     if (!this.feedbackForm) { return; }
     const form = this.feedbackForm;
@@ -97,10 +101,19 @@ export class ContactComponent implements OnInit {
     }
   }
 
-
   onSubmit() {
+    this.submitting = true;
     this.feedback = this.feedbackForm.value;
-    console.log(this.feedback);
+    this.feedbackService.submitFeedback(this.feedback)
+      .subscribe(res => {
+        this.submitting = false;
+        this.feedbackCopy = res;
+        setTimeout(() => {
+          this.feedbackCopy = null;
+        }, 5000);
+      }
+        , err => console.error(err));
+
     this.feedbackForm.reset({
       firstname: '',
       lastname: '',
